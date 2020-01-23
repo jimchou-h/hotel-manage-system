@@ -1,0 +1,67 @@
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+  background: linear-gradient(180deg, rgba(253, 253, 253, 1) 0%, rgba(234, 237, 245, 1) 100%);
+  border: 1px solid rgba(224, 222, 222, 1);
+  color: #000;
+  font-weight: 600;
+}
+
+.el-pagination.is-background .btn-next,
+.el-pagination.is-background .btn-prev,
+.el-pagination.is-background .el-pager li {
+  background-color: #fff;
+  border: 1px solid rgba(223, 223, 223, 1);
+  font-weight: normal;
+  height: 42px;
+}
+
+.el-pagination.is-background,
+.el-pagination.is-background,
+.el-pagination.is-background .el-pager li {
+  line-height: 42px;
+}
+
+.el-pagination.is-background .el-pager li {
+  width: 42px;
+}
+
+.el-pagination__jump,
+.el-pagination__total {
+  height: 42px !important;
+  line-height: 42px !important;
+  font-size: 14px !important;
+}
+
+.el-pagination__total {
+  margin-left: 16px;
+  
+}
+
+.btn-prev,
+.btn-next {
+  width: 84px;
+}
+
+.el-pagination .el-select .el-input {
+  width: 152px;
+  height: 42px;
+}
+
+.el-input--mini .el-input__inner {
+  height: 42px;
+  line-height: 42px;
+}
+
+.clearfix {
+  *zoom: 1;
+}
+
+.clearfix::before,
+.clearfix::after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+
+.clearfix:after {
+  clear: both;
+}
