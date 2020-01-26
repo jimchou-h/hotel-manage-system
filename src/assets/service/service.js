@@ -57,6 +57,7 @@ const setPaymentAllow = (request) => post(_MANAGER + '/payment/allow', request, 
 const setPaymentDisallow = (request) => post(_MANAGER + '/payment/disallow', request, 'raw')
 const getReportOneData = (request) => post(_MANAGER + '/report/one', request, 'raw')
 const getSituationList = (request) => post(_MANAGER + '/report/two', request, 'raw')
+const getLiveCounts = (request) => post(_MANAGER + '/report/three', request, 'raw')
 
 // customer
 const saveSituation = (request) => post(_CUSTOMER + '/situation', request, 'raw')
@@ -102,5 +103,6 @@ export default {
   getDemandList,
   setDemandFinish,
   setDemandUnfinish,
-  checkRoomRepeat
+  checkRoomRepeat,
+  getLiveCounts
 }

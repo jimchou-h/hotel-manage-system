@@ -72,7 +72,7 @@
         </el-form-item>
         <el-form-item label="预计退房时间" prop="preLiveTime">
           <el-date-picker v-model="frontLiveQuery.preLiveTime" type="datetime" placeholder="选择预计退房时间" format="yyyy-MM-dd HH:mm"
-            value-format="yyyy-MM-dd HH:mm">
+            value-format="yyyy-MM-dd HH:mm" :picker-options="pickerDate">
           </el-date-picker>
         </el-form-item>
       </el-form>
@@ -97,7 +97,41 @@
         pickerDate: {
           disabledDate: time => {
             return time.getTime() < (Date.now() - 86400000);
-          }
+          },
+          shortcuts: [{
+            text: '一天',
+            onClick(picker) {
+              picker.$emit('pick', new Date() + 3600 * 1000 * 24);
+            }
+          }, {
+            text: '两天',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() + 3600 * 1000 * 24 * 2);
+              picker.$emit('pick', date);
+            }
+          }, {
+            text: '三天',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() + 3600 * 1000 * 24 * 3);
+              picker.$emit('pick', date);
+            }
+          }, {
+            text: '四天',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() + 3600 * 1000 * 24 * 4);
+              picker.$emit('pick', date);
+            }
+          }, {
+            text: '一周',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() + 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', date);
+            }
+          }]
         },
         operate: {
           book: true,

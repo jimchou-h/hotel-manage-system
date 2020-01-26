@@ -105,6 +105,9 @@
             }, {
               name: "顾客需求统计",
               path: "/main/manager/demand",
+            }, {
+              name: "顾客入住次数统计",
+              path: "/main/manager/live",
             }]
           }, {
             name: "账单支出审核",

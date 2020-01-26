@@ -65,6 +65,10 @@ export default new Router({
         name: 'ManagerSituation',
         component: components.managerSituation
       }, {
+        path: '/main/manager/live',
+        name: 'ManagerLive',
+        component: components.managerLive
+      }, {
         path: '/main/manager/demand',
         name: 'ManagerDemand',
         component: components.managerDemand

@@ -12,6 +12,7 @@ import managerIncome from "@/components/manager/income"
 import managerPay from "@/components/manager/pay"
 import managerSituation from "@/components/manager/situation"
 import managerDemand from "@/components/manager/demand"
+import managerLive from "@/components/manager/live"
 import customerIndex from "@/components/customer/index"
 import customerAddDemand from "@/components/customer/addDemand"
 import customerLook from "@/components/customer/lookForward"
@@ -32,6 +33,7 @@ const components = {
   managerIncome,
   managerSituation,
   managerDemand,
+  managerLive,
   customerIndex,
   customerAddDemand,
   customerLook,
