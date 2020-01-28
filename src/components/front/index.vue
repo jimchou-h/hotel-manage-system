@@ -4,13 +4,25 @@
       <div class="search-wrapper">
         <div class="select-wrapper">
           <el-select v-model="frontQuery.type" placeholder="客房状态选择">
-            <el-option label="全部" value>
+            <el-option label="全部" value=" ">
             </el-option>
             <el-option label="空闲中" value="free">
             </el-option>
             <el-option label="已预定" value="book">
             </el-option>
             <el-option label="已入住" value="live">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="select-wrapper">
+          <el-select v-model="frontQuery.roomtype" placeholder="客房类型选择">
+            <el-option label="全部" value=" ">
+            </el-option>
+            <el-option label="单人房" value="单人房">
+            </el-option>
+            <el-option label="双人房" value="双人房">
+            </el-option>
+            <el-option label="总统套房" value="总统套房">
             </el-option>
           </el-select>
         </div>
@@ -147,11 +159,16 @@
           page: 1,
           size: 10,
           type: "",
-          q: ""
+          q: "",
+          roomtype: ""
         },
         frontTableTitle: [{
             th: "房间号",
             td: "number"
+          },
+          {
+            th: "房间类型",
+            td: "type"
           },
           {
             th: "价格/天",
@@ -448,6 +465,19 @@
             _that.loading = false;
           }, 500)
         },
+      },
+      'frontQuery.roomtype': {
+        handler: function() {
+          if (this.loading) {
+            return;
+          }
+          var _that = this;
+          this.loading = true;
+          setTimeout(function() {
+            _that.__getFrontList();
+            _that.loading = false;
+          }, 500)
+        },
       }
     },
     mounted() {
@@ -480,6 +510,11 @@
 
   .search-wrapper .select-wrapper {
     float: right;
+  }
+
+  .search-wrapper .select-wrapper+.select-wrapper {
+    float: right;
+    margin-right: 10px;
   }
 
   >>>.search-wrapper .el-input__inner {

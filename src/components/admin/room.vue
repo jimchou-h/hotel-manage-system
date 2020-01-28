@@ -13,13 +13,24 @@
     <div class="pagination-wrapper">
       <pagination v-if="pagination.total" :pagination="pagination" @change="handlePageChange(arguments)"></pagination>
     </div>
-    <el-dialog :close-on-click-modal="false" :title="roomAddQuery.id ? '编辑客房信息' : '添加客房信息'" :visible.sync="roomAdd" width="45%" :before-close="handleRoomDialogClose">
+    <el-dialog :close-on-click-modal="false" :title="roomAddQuery.id ? '编辑客房信息' : '添加客房信息'" :visible.sync="roomAdd"
+      width="45%" :before-close="handleRoomDialogClose">
       <el-form :inline="true" :rules="rules" :model="roomAddQuery" ref="roomAddQuery">
         <el-form-item label="房间号" prop="number">
           <el-input v-model="roomAddQuery.number"></el-input>
         </el-form-item>
         <el-form-item label="客房价格" prop="price">
           <el-input v-model="roomAddQuery.price"></el-input>
+        </el-form-item>
+        <el-form-item label="房间类型" prop="type">
+          <el-select v-model="roomAddQuery.type">
+            <el-option label="单人房" value="单人房">
+            </el-option>
+            <el-option label="双人房" value="双人房">
+            </el-option>
+            <el-option label="总统套房" value="总统套房">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="是否可用" prop="isRent">
           <el-select v-model="roomAddQuery.isRent">
@@ -75,6 +86,10 @@
             td: "number"
           },
           {
+            th: "房间类型",
+            td: "type"
+          },
+          {
             th: "客房价格",
             td: "price"
           }
@@ -89,7 +104,8 @@
         roomAddQuery: {
           number: "",
           price: "",
-          isRent: 1
+          isRent: 1,
+          type: "单人房"
         },
 
         delrow: "",
@@ -106,6 +122,11 @@
           price: {
             required: true,
             message: "客房价格不能为空",
+            trigger: "blur"
+          },
+          type: {
+            required: true,
+            message: "",
             trigger: "blur"
           }
         }
