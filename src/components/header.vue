@@ -10,7 +10,7 @@
       </span>
     </div>
     <div style="display: flex;">
-      <div class="menu-wrapper">
+      <div class="menu-wrapper" v-if="navs.length > 0">
         <el-menu class="el-menu-vertical-demo" background-color="#000" :router="true" text-color="#fff"
           active-text-color="#ffd04b" :default-active="$route.path">
           <template v-for="(item, index) of navs">
@@ -146,7 +146,9 @@
 
       },
       __dataInit() {
-        this.navs = this.navs.concat(this.navsSelection[this.$store.state.personal.position])
+        if (this.$store.state.personal) {
+          this.navs = this.navs.concat(this.navsSelection[this.$store.state.personal.position])
+        }
       }
     },
     mounted() {

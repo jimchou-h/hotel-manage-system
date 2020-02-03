@@ -2,7 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import Config from '@/assets/config/index'
 // import store from '@/stores/index.js';
-// import router from '@/router/index.js'
+import router from '@/router/index.js'
 
 // 将请求参数由对象转化成form-data
 function transformRequest(data) {
@@ -23,6 +23,9 @@ axios.defaults.withCredentials = true;
 
 // 响应拦截器输出错误
 axios.interceptors.response.use(function (response) {
+  if (response['data']['message'] == '你没有操作权限') {
+    router.push('/login');
+  }
   return response;
 }, function (error) {
   console.log(error);
@@ -40,7 +43,7 @@ function post(url, request, type) {
   }
   return axios.post(url, request)
     .then(response => {
-        return response['data']
+      return response['data']
     })
 }
 

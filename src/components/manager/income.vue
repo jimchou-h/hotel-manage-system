@@ -30,7 +30,7 @@
             td: "totalPrice"
           },
           {
-            th: "预定入住时间",
+            th: "预定时间",
             td: "bookTime"
           },
           {
