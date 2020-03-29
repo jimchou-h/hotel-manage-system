@@ -1,27 +1,79 @@
 <template>
   <div>
-    <div class="header-wrapper">
-      <span class="logo-font">酒店管理系统</span>
-      <span class="logo-tel" v-if="$store.state.personal.position == 'customer'">联系方式：123456789</span>
+    <div
+      class="header-wrapper"
+      v-if="$store.state.personal"
+    >
+      <span class="logo-font">青年酒店</span>
+      <el-button
+        class="close-button"
+        type="info"
+        title="收起"
+        @click="handleClose()"
+      ><i class="iconfont">&#xe985;</i></el-button>
       <span class="welcome-tips">
-        欢迎你, {{ positions[$store.state.personal.position] + " " + $store.state.personal.loginName }}
-        &nbsp;
-        <span class="logout" @click="handleLogout()">退出</span>
+        <span v-if="!$store.state.personal.name">尊敬的{{ positions[$store.state.personal.position] }}，您好&nbsp;</span>
+        <div
+          class="person"
+          @click="handleShowBox()"
+          v-if="$store.state.personal.name"
+        >
+          <i
+            class="iconfont"
+            title="个人信息"
+          >&#xe610;</i>
+          <div class="showPerSonBox" v-if="isShow">
+            <div class="show-name">姓名: {{ $store.state.personal.name }}</div>
+            <div class="show-position">职位: {{ positions[$store.state.personal.position] }}</div>
+          </div>
+        </div>
+        <span
+          class="logout"
+          @click="handleLogout()"
+        ><i
+            class="iconfont"
+            style="color: red"
+            title="退出"
+          >&#xe600;</i></span>
       </span>
     </div>
-    <div style="display: flex;">
-      <div class="menu-wrapper" v-if="navs.length > 0">
-        <el-menu class="el-menu-vertical-demo" background-color="#000" :router="true" text-color="#fff"
-          active-text-color="#ffd04b" :default-active="$route.path">
+    <div style="display: flex; width: 100%">
+      <div
+        class="menu-wrapper"
+      >
+        <el-menu
+          v-if="navs.length > 0"
+          class="el-menu-vertical-demo"
+          :collapse="isClose"
+          background-color="#000"
+          :router="true"
+          text-color="#fff"
+          active-text-color="#ffd04b"
+          :default-active="$route.path"
+        >
           <template v-for="(item, index) of navs">
-            <el-menu-item v-if="!item.children" :key="index" :index="item.path">
+            <el-menu-item
+              v-if="!item.children"
+              :key="index"
+              :index="item.path"
+            >
+              <i class="el-icon-menu"></i>
               <span slot="title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ item.name }}</span>
             </el-menu-item>
-            <el-submenu v-else :key="index" :index="index + ''">
+            <el-submenu
+              v-else
+              :key="index"
+              :index="index + ''"
+            >
               <template slot="title">
+                <i class="el-icon-menu"></i>
                 <span slot="title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ item.name }}</span>
               </template>
-              <el-menu-item v-for="(item, index) of item.children" :key="index" :index="item.path">
+              <el-menu-item
+                v-for="(item, index) of item.children"
+                :key="index"
+                :index="item.path"
+              >
                 <span slot="title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ item.name }}</span>
               </el-menu-item>
             </el-submenu>
@@ -30,171 +82,285 @@
       </div>
       <div class="router-wrapper">
         <router-view />
+        <div class="banquan"><span class="banquan-font">联系方式：020-123456789
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            hjz中山大学新华学院2020</span></div>
       </div>
+
     </div>
   </div>
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        positions: {
-          admin: "管理员",
-          front: "前台",
-          cleaner: "酒店清洁人员",
-          logistics: "后勤人员",
-          manager: "酒店经理",
-          customer: "顾客",
-          waiter: "服务员"
-        },
+export default {
+  data() {
+    return {
+      isClose: false,
+      isShow: false,
 
-        navs: [],
-        navsSelection: {
-          waiter: [{
+      positions: {
+        admin: "管理员",
+        front: "前台",
+        cleaner: "酒店清洁人员",
+        logistics: "后勤人员",
+        manager: "酒店经理",
+        customer: "顾客",
+        waiter: "服务员"
+      },
+
+      navs: [],
+      navsSelection: {
+        waiter: [
+          {
             name: "顾客需求管理",
             path: "/main/waiter/index"
-          }],
-          customer: [{
+          }
+        ],
+        customer: [
+          {
             name: "顾客意见管理",
             path: "/main/customer/index"
-          }, {
+          },
+          {
             name: "顾客添加需求",
             path: "/main/customer/demand"
-          }, {
+          },
+          {
             name: "周边景点查看",
             path: "/main/customer/look"
-          }],
-          admin: [{
+          }
+        ],
+        admin: [
+          {
             name: "员工管理",
             path: "/main/admin/index"
-          }, {
+          },
+          {
             name: "客房管理",
             path: "/main/admin/room"
-          }],
-          cleaner: [{
+          }
+        ],
+        cleaner: [
+          {
             name: "客房清洁管理",
             path: "/main/cleaner/index"
-          }],
-          front: [{
+          }
+        ],
+        front: [
+          {
             name: "客房订住管理",
             path: "/main/front/index"
-          }, {
+          },
+          {
             name: "收银管理",
             path: "/main/front/money"
-          }],
-          logistics: [{
+          }
+        ],
+        logistics: [
+          {
             name: "账单支出管理",
             path: "/main/logistics/index"
-          }],
-          manager: [{
+          }
+        ],
+        manager: [
+          {
             name: "报表统计",
             path: "/main/manager/index",
-            children: [{
-              name: "总收入支出统计",
-              path: "/main/manager/index",
-            }, {
-              name: "收入明细",
-              path: "/main/manager/income",
-            }, {
-              name: "支出明细",
-              path: "/main/manager/pay",
-            }, {
-              name: "顾客意见统计",
-              path: "/main/manager/situation",
-            }, {
-              name: "顾客需求统计",
-              path: "/main/manager/demand",
-            }, {
-              name: "顾客入住次数统计",
-              path: "/main/manager/live",
-            }]
-          }, {
+            children: [
+              {
+                name: "总收入支出统计",
+                path: "/main/manager/index"
+              },
+              {
+                name: "收入明细",
+                path: "/main/manager/income"
+              },
+              {
+                name: "支出明细",
+                path: "/main/manager/pay"
+              },
+              {
+                name: "顾客意见统计",
+                path: "/main/manager/situation"
+              },
+              {
+                name: "顾客需求统计",
+                path: "/main/manager/demand"
+              },
+              {
+                name: "顾客入住次数统计",
+                path: "/main/manager/live"
+              }
+            ]
+          },
+          {
             name: "账单支出审核",
-            path: "/main/manager/payment",
-          }]
-        }
+            path: "/main/manager/payment"
+          }
+        ]
+      }
+    };
+  },
+  methods: {
+    handleShowBox() {
+      this.isShow = !this.isShow;
+    },
+    handleClose() {
+      this.isClose = !this.isClose;
+    },
+    handleLogout() {
+      if (this.$store.state.personal.position == "customer") {
+        this.$message({
+          message: "退出成功，即将跳转登录界面",
+          type: "success"
+        });
+        setTimeout(() => {
+          this.$store.commit("delPersonal");
+          this.$router.push("/login");
+        }, 1000);
+      } else {
+        this.$Service.logout().then(res => {
+          if (res.code == 1) {
+            this.$message({
+              message: "退出成功，即将跳转登录界面",
+              type: "success"
+            });
+            setTimeout(() => {
+              this.$store.commit("delPersonal");
+              this.$router.push("/login");
+            }, 1000);
+          } else {
+            this.$message.error("退出失败");
+          }
+        });
       }
     },
-    methods: {
-      handleLogout() {
-        if (this.$store.state.personal.position == 'customer') {
-          this.$message({
-            message: '退出成功，即将跳转登录界面',
-            type: 'success'
-          });
-          setTimeout(() => {
-            this.$store.commit("delPersonal");
-            this.$router.push("/login")
-          }, 1000)
-        } else {
-          this.$Service.logout().then(res => {
-            if (res.code == 1) {
-              this.$message({
-                message: '退出成功，即将跳转登录界面',
-                type: 'success'
-              });
-              setTimeout(() => {
-                this.$store.commit("delPersonal");
-                this.$router.push("/login")
-              }, 1000)
-            } else {
-              this.$message.error('退出失败');
-            }
-          })
-        }
-
-      },
-      __dataInit() {
-        if (this.$store.state.personal) {
-          this.navs = this.navs.concat(this.navsSelection[this.$store.state.personal.position])
-        }
+    __dataInit() {
+      if (this.$store.state.personal) {
+        console.log(this.$store.state.personal);
+        this.navs = this.navs.concat(
+          this.navsSelection[this.$store.state.personal.position]
+        );
       }
-    },
-    mounted() {
-      this.__dataInit();
     }
+  },
+  mounted() {
+    this.__dataInit();
+    document.getElementsByClassName('menu-wrapper')[0].style.height = window.screen.height + 'px';
   }
+};
 </script>
 
-<style>
-  .header-wrapper {
-    position: relative;
-    width: 100%;
-    height: 64px;
-    line-height: 64px;
-    font-size: 18px;
-    background: #000000;
-    color: #fff;
-  }
+<style scoped>
+.header-wrapper {
+  position: relative;
+  width: 100%;
+  height: 64px;
+  line-height: 64px;
+  font-size: 18px;
+  background: #000000;
+  color: #fff;
+}
 
-  .header-wrapper .logo-font {
-    margin-left: 50px;
-  }
+.header-wrapper .logo-font {
+  display: inline-block;
+  width: 200px;
+  text-align: center;
+  background: #000;
+  box-sizing: border-box;
+  background-color: cadetblue;
+}
 
-  .header-wrapper .logo-tel {
-    margin-left: 50px;
-  }
+.close-button {
+  margin: -1px 0 0 5px;
+}
 
-  .welcome-tips {
-    float: right;
-    margin-right: 20px;
-  }
+.close-button:hover {
+  opacity: 0.3;
+}
 
-  .logout {
-    text-decoration: underline;
-    cursor: pointer;
-  }
+.welcome-tips {
+  float: right;
+  margin-right: 20px;
+}
 
-  .menu-wrapper {
-    flex: 0 0 225px;
-    height: calc(100vh - 64px);
-    background: #000000;
-  }
+.person {
+  display: inline-block;
+  position: relative;
+  text-align: center;
+}
 
-  .router-wrapper {
-    flex: 1;
-    height: 100%;
-    overflow: hidden;
-  }
+.logout,
+.person {
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.showPerSonBox::before {
+  content: "";
+  position: absolute;
+  right: 22px;
+  top: -10px;
+  display: block;
+  margin-left: -5px;
+  width: 0;
+  height: 0;
+  line-height: 0;
+  font-size: 0;
+  border: 5px solid transparent;
+  border-bottom-color: #000;
+}
+
+.showPerSonBox {
+  position: absolute;
+  top: 75px;
+  left: -143px;
+  width: 180px;
+  background: #000;
+  z-index: 9998;
+  border-radius: 3px;
+  padding: 10px 0;
+}
+
+.show-name, .show-position {
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.menu-wrapper {
+  width: auto;
+  background: #000000;
+  margin-top: -1px;
+}
+
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+}
+
+.router-wrapper {
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+  margin-bottom: 60px;
+}
+
+.banquan {
+  padding-left: 0px;
+  position: fixed;
+  bottom: 0;
+  background: #aaa;
+  color: #fff;
+  height: 60px;
+  line-height: 60px;
+  width: 100vw;
+  text-align: center;
+  z-index: 9999;
+}
+
+.banquan-font {
+  margin-left: -434px;
+}
 </style>

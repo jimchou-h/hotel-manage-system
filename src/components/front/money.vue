@@ -9,6 +9,20 @@
     <div class="pagination-wrapper">
       <pagination v-if="pagination.total" :pagination="pagination" @change="handlePageChange(arguments)"></pagination>
     </div>
+    <!-- <el-dialog :close-on-click-modal="false" :title="客房收银" :visible.sync="payShow" width="45%" :before-close="handleEmployeeDialogClose">
+      <el-form :inline="true" :rules="rules" :model="payQuery" ref="payQuery">
+        <el-form-item label="额外费用" prop="extra">
+          <el-input type="number" v-model="payQuery.extra"></el-input>
+        </el-form-item>
+        <el-form-item label="折扣" prop="discount">
+          <el-input type="number" v-model="payQuery.tel"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleEmployeeDialogClose()">取 消</el-button>
+        <el-button type="primary" @click="handleEmployeeFormSubmit()">确 定</el-button>
+      </span>
+    </el-dialog> -->
   </div>
 </template>
 
@@ -23,6 +37,10 @@
         moneyQuery: {
           page: 1,
           size: 10
+        },
+        payQuery: {
+          extra: 0,
+          discount: 0
         },
         moneyTableTitle: [{
             th: "房间号",
@@ -96,7 +114,7 @@
         }
         this.$Service.setMoneyIsPay({
           ids: ids,
-          name: this.$store.state.personal.loginName
+          name: this.$store.state.personal.name
         }).then(res => {
           if (res.code == 1) {
             this.$message({

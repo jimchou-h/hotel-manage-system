@@ -3,6 +3,7 @@
     <div class="header-wrapper">
       <span class="logo-font">欢迎登陆酒店管理系统</span>
     </div>
+    <img class="backgeound-image" src="@/assets/img/hotel.png" />
     <div class="login-wrapper">
       <div class="login-title">Login</div>
       <div class="login-body">
@@ -81,7 +82,9 @@
             message: '登陆成功，即将跳转主界面',
             type: 'success'
           });
-          this.$store.commit("setPersonal", this.query);
+          this.$store.commit("setPersonal", Object.assign(this.query, {
+            name: ""
+          }));
           setTimeout(() => {
              this.$router.push("/main/customer/index");
           }, 1000)
@@ -104,7 +107,7 @@
                 message: '登陆成功，即将跳转主界面',
                 type: 'success'
               });
-              this.$store.commit("setPersonal", this.query);
+              this.$store.commit("setPersonal", Object.assign(this.query, res.data));
               setTimeout(() => {
                 switch (this.query.position) {
                   case "admin":
@@ -153,6 +156,7 @@
     font-size: 18px;
     background: #000000;
     color: #fff;
+    box-sizing: border-box;
   }
 
   .header-wrapper .logo-font {
@@ -163,7 +167,14 @@
     position: relative;
     width: 100%;
     height: 100vh;
-    background-color: #e6e8ea;
+  }
+
+  .backgeound-image {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
   }
 
   .login-wrapper {
