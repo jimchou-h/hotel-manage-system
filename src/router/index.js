@@ -73,9 +73,21 @@ const router = new Router({
         name: 'ManagerDemand',
         component: components.managerDemand
       }, {
+        path: '/main/manager/dayperiod',
+        name: 'ManagerDayPeriod',
+        component: components.managerDayPeriod
+      }, {
+        path: '/main/manager/card',
+        name: 'ManagerCard',
+        component: components.managerCard
+      }, {
         path: '/main/customer/index',
         name: 'CustomerIndex',
         component: components.customerIndex
+      }, {
+        path: '/main/customer/situation',
+        name: 'CustomerSituation',
+        component: components.customerSituation
       }, {
         path: '/main/customer/demand',
         name: 'CustomerAddDemand',

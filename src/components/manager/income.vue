@@ -75,36 +75,6 @@
       }
     },
     methods: {
-      handleSetMoneyIsPay() {
-        let selectList = this.$refs.table.getSelectedItem();
-        if (!selectList.length) {
-          this.$message.error('未选中任何记录');
-          return;
-        }
-        let ids = []
-        for (let i = 0, j = selectList.length; i < j; i++) {
-          if (selectList[i].isPay == 0) {
-            ids.push(selectList[i].id);
-          }
-        }
-        if (!ids.length) {
-          this.$message.error('选中的记录都已支付，请重新选择');
-          return;
-        }
-        this.$Service.setMoneyIsPay({
-          ids: ids
-        }).then(res => {
-          if (res.code == 1) {
-            this.$message({
-              message: '设置已支付成功',
-              type: 'success'
-            });
-            this.__getMoneyList();
-          } else {
-            this.$message.error(res.message);
-          }
-        })
-      },
       handlePageChange(data) {
         if (data[0] == "size" && this.moneyQuery.size !== data[1]) {
           this.moneyQuery.page = 1;

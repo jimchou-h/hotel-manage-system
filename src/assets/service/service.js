@@ -14,9 +14,11 @@ function post(url, request, type) {
   })
 }
 
-// login
+// common
 const login = (request) => post('/login', request, 'raw')
 const logout = (request) => post('/logout', request, 'raw')
+const setCard = (request) => post('/setcard', request, 'raw')
+const checkCard = (request) => post('/checkcard', request, 'raw')
 
 // admin
 const getEmployeeList = (request) => post(_ADMIN + '/employee/list', request, 'raw')
@@ -33,6 +35,7 @@ const checkRoomRepeat = (request) => post(_ADMIN + '/room/check', request, 'raw'
 const getCleanerList = (request) => post(_CLEANER + '/list', request, 'raw')
 const setRoomClean = (request) => post(_CLEANER + '/set', request, 'raw')
 const setRoomUnclean = (request) => post(_CLEANER + '/unset', request, 'raw')
+const receiveTask = (request) => post(_CLEANER + '/receive', request, 'raw')
 
 // front
 const getFrontList = (request) => post(_FRONT + '/room/list', request, 'raw')
@@ -58,6 +61,9 @@ const setPaymentDisallow = (request) => post(_MANAGER + '/payment/disallow', req
 const getReportOneData = (request) => post(_MANAGER + '/report/one', request, 'raw')
 const getSituationList = (request) => post(_MANAGER + '/report/two', request, 'raw')
 const getLiveCounts = (request) => post(_MANAGER + '/report/three', request, 'raw')
+const getDayPeriod = (request) => post(_MANAGER + '/report/dayperiod', request, 'raw')
+const getCardList = (request) => post(_MANAGER + '/report/cardlist', request, 'raw')
+const getCustomerLiveDetail = (request) => post(_MANAGER + '/report/three/detail', request, 'raw')
 
 // customer
 const saveSituation = (request) => post(_CUSTOMER + '/situation', request, 'raw')
@@ -104,5 +110,11 @@ export default {
   setDemandFinish,
   setDemandUnfinish,
   checkRoomRepeat,
-  getLiveCounts
+  getLiveCounts,
+  getDayPeriod,
+  setCard,
+  checkCard,
+  getCardList,
+  getCustomerLiveDetail,
+  receiveTask
 }

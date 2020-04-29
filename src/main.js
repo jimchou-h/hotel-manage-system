@@ -13,7 +13,11 @@ import '@/assets/js/index.js'
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 
+import BaiduMap from 'vue-baidu-map'
 
+Vue.use(BaiduMap, {
+  ak: "nQcu1frLllQ16Uis3ydw9SPRF8XxaWnF"
+})
 
 Vue.prototype.$Service = require('@/assets/service/service').default;
 Vue.prototype.$Cache = require('@/assets/global/cache').default

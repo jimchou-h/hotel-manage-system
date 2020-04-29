@@ -42,7 +42,7 @@
       <el-form :inline="true" :rules="rules" :model="frontAddQuery" ref="frontAddQuery">
         <el-form-item label="预约时间" prop="bookTime">
           <el-date-picker v-model="frontAddQuery.bookTime" type="datetime" placeholder="选择预计入住时间" format="yyyy-MM-dd HH:mm"
-            value-format="yyyy-MM-dd HH:mm" :picker-options="pickerDate">
+            value-format="yyyy-MM-dd HH:mm:ss" :picker-options="pickerDate">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="顾客姓名" prop="customerName">
@@ -84,7 +84,7 @@
         </el-form-item>
         <el-form-item label="预计退房时间" prop="preLiveTime">
           <el-date-picker v-model="frontLiveQuery.preLiveTime" type="datetime" placeholder="选择预计退房时间" format="yyyy-MM-dd HH:mm"
-            value-format="yyyy-MM-dd HH:mm" :picker-options="pickerDate">
+            value-format="yyyy-MM-dd HH:mm:ss" :picker-options="pickerDate">
           </el-date-picker>
         </el-form-item>
       </el-form>
@@ -299,8 +299,7 @@
                 preLiveTime: this.leaveRow.preLiveTime,
                 tel: this.leaveRow.tel,
                 deposit: this.leaveRow.deposit,
-                leaveTime: d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() +
-                  ':' + d.getMinutes() + ':' + d.getSeconds()
+                leaveTime: d.getFullYear() + '-' + ((d.getMonth() + 1) < 10 ? '0' : '')  + (d.getMonth() + 1) + '-' + (d.getDate() < 10 ? '0' : '') + d.getDate() + ' ' + (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes() + ':' + (d.getSeconds() < 10 ? '0' : '') + d.getSeconds()
               }).then(res => {
                 if (res.code == 1) {
                   this.$message({
@@ -341,8 +340,7 @@
       // 提交入住表单
       handleFrontLiveFormSubmit() {
         let d = new Date();
-        this.frontLiveQuery.livetime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() +
-          ':' + d.getMinutes() + ':' + d.getSeconds();
+        this.frontLiveQuery.livetime = d.getFullYear() + '-' + ((d.getMonth() + 1) < 10 ? '0' : '')  + (d.getMonth() + 1) + '-' + (d.getDate() < 10 ? '0' : '') + d.getDate() + ' ' + (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes() + ':' + (d.getSeconds() < 10 ? '0' : '') + d.getSeconds();
         this.$refs["frontLiveQuery"].validate(valid => {
           if (valid) {
             this.$Service.liveFront(this.frontLiveQuery).then(res => {

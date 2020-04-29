@@ -198,7 +198,7 @@
               }
               this.__getEmployeeList();
             } else {
-              this.$message.error('删除失败');
+              this.$message.error(res.message);
             }
           })
         } else {
@@ -254,7 +254,7 @@
                   Object.assign(this.$data.employeeAddQuery, this.$options.data().employeeAddQuery);
                   this.__getEmployeeList();
                 } else {
-                  this.$message.error('添加失败');
+                  this.$message.error(res.message);
                 }
               });
             }

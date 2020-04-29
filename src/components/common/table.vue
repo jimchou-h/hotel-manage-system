@@ -19,6 +19,7 @@
           :label="data.th"
           :key="data.td"
           :min-width="getWidth(data)"
+          :sortable="data.sortable"
         ></el-table-column>
       </template>
       <el-table-column
@@ -53,7 +54,7 @@
         width="100"
       >
         <template slot-scope="scope">
-          {{ scope.row.isClean == 1 ? '已清理' : '未清理' }}
+          {{ scope.row.isClean == 1 ? '已清理' : scope.row.isClean == 0 ? '未清理' : '清理中' }}
         </template>
       </el-table-column>
       <el-table-column
@@ -123,7 +124,7 @@
               class="operate"
               title="预定"
               style="background: #57ABD8; display: inline-block"
-              v-if="scope.row.isClean && !scope.row.livetime && !scope.row.isBook && operate.book"
+              v-if="scope.row.isClean == 1 && !scope.row.livetime && !scope.row.isBook && scope.row.isRent == 1 && operate.book"
               @click="handleBookClick(scope.row)"
             >
               <i class="iconfont watch">&#xe6ae;</i>
@@ -132,7 +133,7 @@
               class="operate"
               title="取消预定"
               style="background: red; display: inline-block"
-              v-if="!scope.row.livetime && scope.row.isBook && operate.book"
+              v-if="!scope.row.livetime && scope.row.isBook && scope.row.isRent == 1  && operate.book"
               @click="handleUnbookClick(scope.row)"
             >
               <i class="iconfont unbook">&#xe604;</i>
@@ -141,7 +142,7 @@
               class="operate"
               title="入住"
               style="background: #57ABD8; display: inline-block"
-              v-if="scope.row.isClean && !scope.row.livetime && operate.live"
+              v-if="scope.row.isClean == 1 && !scope.row.livetime && scope.row.isRent == 1  && operate.live"
               @click="handleSetLive(scope.row)"
             >
               <i class="iconfont watch">&#xe67e;</i>
@@ -150,10 +151,28 @@
               class="operate"
               title="退房"
               style="background: red; display: inline-block"
-              v-if="scope.row.isClean && scope.row.livetime && operate.live"
+              v-if="scope.row.isClean && scope.row.livetime && scope.row.isRent == 1  && operate.live"
               @click="handleSetLeave(scope.row)"
             >
               <i class="iconfont watch">&#xe6ee;</i>
+            </div>
+            <div
+              class="operate"
+              title="查看详情"
+              style="background: #85F2F2; display: inline-block"
+              v-if="operate.watch"
+              @click="handleEmitCustomer(scope.row)"
+            >
+              <i class="iconfont watch">&#xe62c;</i>
+            </div>
+            <div
+              class="operate"
+              title="接受"
+              style="background: #85F2F2; display: inline-block"
+              v-if="operate.receive && scope.row.isClean === 0"
+              @click="handleEmitReceive(scope.row)"
+            >
+              <i class="iconfont watch">&#xe6a2;</i>
             </div>
             <!--
             <div
@@ -227,6 +246,12 @@ export default {
     };
   },
   methods: {
+    handleEmitReceive(row) {
+      this.$emit("receive", row);
+    },
+    handleEmitCustomer(row) {
+      this.$emit("watch", row.customerIdentity);
+    },
     handleSetLeave(row) {
       this.$emit("leave", row);
     },
@@ -268,11 +293,11 @@ export default {
           return 120;
         case "押金":
           return 80;
-        case "预约时间":
+        case "预定时间":
         case "入住时间":
         case "预计退房时间":
         case "清理时间":
-          return 140;
+          return 160;
         default:
           return 150;
       }

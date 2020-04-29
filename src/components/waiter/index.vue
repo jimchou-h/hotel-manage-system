@@ -77,7 +77,7 @@
         }
         this.$Service.setDemandUnfinish({
           ids: ids,
-          name: this.$store.state.personal.loginName
+          name: this.$store.state.personal.name
         }).then(res => {
           if (res.code == 1) {
             this.$message({

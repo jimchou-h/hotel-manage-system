@@ -160,7 +160,7 @@
               }
               this.__getRoomList();
             } else {
-              this.$message.error('删除失败');
+              this.$message.error(res.message);
             }
           })
         } else {
@@ -217,7 +217,7 @@
                         Object.assign(this.$data.roomAddQuery, this.$options.data().roomAddQuery);
                         this.__getRoomList();
                       } else {
-                        this.$message.error('添加客房信息失败');
+                        this.$message.error(res.message);
                       }
                     });
                   } else {

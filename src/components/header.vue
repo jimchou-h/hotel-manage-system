@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%">
     <div
       class="header-wrapper"
       v-if="$store.state.personal"
@@ -15,7 +15,7 @@
         <span v-if="!$store.state.personal.name">尊敬的{{ positions[$store.state.personal.position] }}，您好&nbsp;</span>
         <div
           class="person"
-          @click="handleShowBox()"
+          @click="handleShowBox($event)"
           v-if="$store.state.personal.name"
         >
           <i
@@ -25,6 +25,8 @@
           <div class="showPerSonBox" v-if="isShow">
             <div class="show-name">姓名: {{ $store.state.personal.name }}</div>
             <div class="show-position">职位: {{ positions[$store.state.personal.position] }}</div>
+            <div class="show-button" v-if="!$store.state.personal.card" @click="handleCard()">立刻打卡</div>
+            <div class="show-button" style="background: gray" v-else>已打卡</div>
           </div>
         </div>
         <span
@@ -37,7 +39,7 @@
           >&#xe600;</i></span>
       </span>
     </div>
-    <div style="display: flex; width: 100%">
+    <div class="section" style="display: flex; width: 100%">
       <div
         class="menu-wrapper"
       >
@@ -82,7 +84,7 @@
       </div>
       <div class="router-wrapper">
         <router-view />
-        <div class="banquan"><span class="banquan-font">联系方式：020-123456789
+        <div class="banquan"><span class="banquan-font">酒店服务热线：020-123456789
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             hjz中山大学新华学院2020</span></div>
       </div>
@@ -118,8 +120,12 @@ export default {
         ],
         customer: [
           {
-            name: "顾客意见管理",
+            name: "首页",
             path: "/main/customer/index"
+          },
+          {
+            name: "顾客意见管理",
+            path: "/main/customer/situation"
           },
           {
             name: "顾客添加需求",
@@ -190,6 +196,12 @@ export default {
               {
                 name: "顾客入住次数统计",
                 path: "/main/manager/live"
+              }, {
+                name: "阶段入住人数统计",
+                path: "/main/manager/dayperiod"
+              }, {
+                name: "当日打卡人数统计",
+                path: "/main/manager/card"
               }
             ]
           },
@@ -202,8 +214,25 @@ export default {
     };
   },
   methods: {
-    handleShowBox() {
-      this.isShow = !this.isShow;
+    handleCard() {
+      const { loginName, position } = this.$store.state.personal
+      let d = new Date()
+      let cardTime = d.getFullYear() + '-' + ((d.getMonth() + 1) < 10 ? '0' : '')  + (d.getMonth() + 1) + '-' + (d.getDate() < 10 ? '0' : '') + d.getDate() + ' ' + (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes() + ':' + (d.getSeconds() < 10 ? '0' : '') + d.getSeconds();
+      this.$Service.setCard({
+        cardTime,
+        loginName,
+        position
+      }).then(res => {
+        if (res.code == 1) {
+          this.$store.state.personal.card = 1;
+          this.$forceUpdate();
+        }
+      })
+    },
+    handleShowBox(e) {
+      if (e.target.className === 'person' || e.target.className === 'iconfont') {
+        this.isShow = !this.isShow;
+      }
     },
     handleClose() {
       this.isClose = !this.isClose;
@@ -237,7 +266,6 @@ export default {
     },
     __dataInit() {
       if (this.$store.state.personal) {
-        console.log(this.$store.state.personal);
         this.navs = this.navs.concat(
           this.navsSelection[this.$store.state.personal.position]
         );
@@ -246,12 +274,12 @@ export default {
   },
   mounted() {
     this.__dataInit();
-    document.getElementsByClassName('menu-wrapper')[0].style.height = window.screen.height + 'px';
   }
 };
 </script>
 
 <style scoped>
+
 .header-wrapper {
   position: relative;
   width: 100%;
@@ -260,6 +288,7 @@ export default {
   font-size: 18px;
   background: #000000;
   color: #fff;
+  border-bottom: 1px solid #000;
 }
 
 .header-wrapper .logo-font {
@@ -267,7 +296,6 @@ export default {
   width: 200px;
   text-align: center;
   background: #000;
-  box-sizing: border-box;
   background-color: cadetblue;
 }
 
@@ -319,18 +347,34 @@ export default {
   background: #000;
   z-index: 9998;
   border-radius: 3px;
-  padding: 10px 0;
+  padding: 10px 0 0 0;
 }
 
 .show-name, .show-position {
   width: 100%;
-  height: 50px;
-  line-height: 50px;
+  height: 30px;
+  line-height: 30px;
   text-align: center;
   font-size: 16px;
 }
 
+.show-button {
+  width: 100%;
+  height: 35px;
+  line-height: 35px;
+  background: red;
+  color: #fff;
+  border-radius: 0 0 3px 3px;
+}
+
+.section {
+  height: calc(100% - 65px);
+  margin-top: -5px;
+  overflow-y: hidden;
+}
+
 .menu-wrapper {
+  height: 100%;
   width: auto;
   background: #000000;
   margin-top: -1px;
@@ -342,9 +386,10 @@ export default {
 
 .router-wrapper {
   flex: 1;
-  height: 100%;
-  overflow: hidden;
-  margin-bottom: 60px;
+  height: calc(100% - 70px);
+  padding-bottom: 100px;
+  overflow-y: scroll;
+  background: #eee;
 }
 
 .banquan {
