@@ -18,6 +18,9 @@ const store = new Vuex.Store({
     },
     delPersonal(state, personal) {
       state.personal = ""
+    },
+    setCards(state, card) {
+      state.personal.card = card;
     }
   }
 })

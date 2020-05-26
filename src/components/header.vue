@@ -12,20 +12,20 @@
         @click="handleClose()"
       ><i class="iconfont">&#xe985;</i></el-button>
       <span class="welcome-tips">
-        <span v-if="!$store.state.personal.name">尊敬的{{ positions[$store.state.personal.position] }}，您好&nbsp;</span>
+        <span v-if="!name">尊敬的{{ positions[name] }}，您好&nbsp;</span>
         <div
           class="person"
           @click="handleShowBox($event)"
-          v-if="$store.state.personal.name"
+          v-if="name"
         >
           <i
             class="iconfont"
             title="个人信息"
           >&#xe610;</i>
           <div class="showPerSonBox" v-if="isShow">
-            <div class="show-name">姓名: {{ $store.state.personal.name }}</div>
-            <div class="show-position">职位: {{ positions[$store.state.personal.position] }}</div>
-            <div class="show-button" v-if="!$store.state.personal.card" @click="handleCard()">立刻打卡</div>
+            <div class="show-name">姓名: {{ name }}</div>
+            <div class="show-position">职位: {{ positions[position] }}</div>
+            <div class="show-button" v-if="!card" @click="handleCard()">立刻打卡</div>
             <div class="show-button" style="background: gray" v-else>已打卡</div>
           </div>
         </div>
@@ -94,6 +94,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
   data() {
     return {
@@ -213,6 +214,11 @@ export default {
       }
     };
   },
+  computed: mapState({
+    name: (state) => state.personal.name,
+    position: (state) => state.personal.position,
+    card: (state) => state.personal.card,
+  }),
   methods: {
     handleCard() {
       const { loginName, position } = this.$store.state.personal

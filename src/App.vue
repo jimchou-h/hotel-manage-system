@@ -5,28 +5,35 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';
   export default {
     name: 'App',
+    computed: mapState({
+      personal: (state) => state.personal,
+    }),
     methods: {
       checkCards() {
-        const { loginName, position } = this.$store.state.personal
+        const { loginName, position } = this.personal
         this.$Service.checkCard({
           loginName,
           position
         }).then(res => {
           if (res.code == 1) {
-            this.$store.state.personal.card = res.data.card
+            this.setCards(res.data.card)
           }
         })
-      }
+      },
+      ...mapMutations([
+        'setCards'
+      ])
     },
     created() {
       window.addEventListener("beforeunload", () => {
-        this.$Cache.set("personal", this.$store.state.personal, true);
+        this.$Cache.set("personal", this.personal, true);
       });
     },
     mounted() {
-      if (this.$store.state.personal) {
+      if (this.personal) {
         this.checkCards()
       }
     }
