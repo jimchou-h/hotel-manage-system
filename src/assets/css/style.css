@@ -1,3 +1,7 @@
+/*
+  Element-ui
+*/
+
 .el-pagination.is-background .el-pager li:not(.disabled).active {
   background: linear-gradient(180deg, rgba(253, 253, 253, 1) 0%, rgba(234, 237, 245, 1) 100%);
   border: 1px solid rgba(224, 222, 222, 1);
@@ -50,6 +54,10 @@
   height: 42px;
   line-height: 42px;
 }
+
+/*
+  clearfix
+*/
 
 .clearfix {
   *zoom: 1;

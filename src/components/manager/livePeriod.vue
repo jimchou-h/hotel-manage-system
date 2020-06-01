@@ -100,7 +100,7 @@ export default {
     },
     async __dateInit() {
       let d = new Date();
-      this.currentDate = d.getFullYear() + '-' + ((d.getMonth() + 1) < 10 ? '0' : '')  + (d.getMonth() + 1) + '-' + (d.getDate() < 10 ? '0' : '') + d.getDate() + ' ' + (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes() + ':' + (d.getSeconds() < 10 ? '0' : '') + d.getSeconds();
+      this.currentDate = this.$Methods.getStandardTime(d)
       this.preDate = d.getFullYear() + '-' + ((d.getMonth() + 1) < 10 ? '0' : '')  + (d.getMonth() + 1) + '-01 00:00:00';
       await this.__getData();
       this.__setWatch();

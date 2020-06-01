@@ -284,7 +284,7 @@
             this.$message.error('时间计算有误');
             return;
           }
-          let d = new Date(leaveTime);
+          leaveTime = this.$Methods.getStandardTime(leaveTime)
           this.$Service.leaveFront({
             id: this.leaveRow.id
           }).then(res => {
@@ -299,7 +299,7 @@
                 preLiveTime: this.leaveRow.preLiveTime,
                 tel: this.leaveRow.tel,
                 deposit: this.leaveRow.deposit,
-                leaveTime: d.getFullYear() + '-' + ((d.getMonth() + 1) < 10 ? '0' : '')  + (d.getMonth() + 1) + '-' + (d.getDate() < 10 ? '0' : '') + d.getDate() + ' ' + (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes() + ':' + (d.getSeconds() < 10 ? '0' : '') + d.getSeconds()
+                leaveTime
               }).then(res => {
                 if (res.code == 1) {
                   this.$message({
@@ -339,8 +339,7 @@
       },
       // 提交入住表单
       handleFrontLiveFormSubmit() {
-        let d = new Date();
-        this.frontLiveQuery.livetime = d.getFullYear() + '-' + ((d.getMonth() + 1) < 10 ? '0' : '')  + (d.getMonth() + 1) + '-' + (d.getDate() < 10 ? '0' : '') + d.getDate() + ' ' + (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes() + ':' + (d.getSeconds() < 10 ? '0' : '') + d.getSeconds();
+        this.frontLiveQuery.livetime = this.$Methods.getStandardTime(new Date())
         this.$refs["frontLiveQuery"].validate(valid => {
           if (valid) {
             this.$Service.liveFront(this.frontLiveQuery).then(res => {

@@ -12,15 +12,21 @@ const store = new Vuex.Store({
       personal: personal,
     }
   },
+  getters: {
+    card: state => state.personal.card
+  },
   mutations: {
     setPersonal(state, personal) {
       state.personal = personal
     },
-    delPersonal(state, personal) {
-      state.personal = ""
+    delPersonal(state) {
+      state.personal = null
     },
     setCards(state, card) {
-      state.personal.card = card;
+      state.personal = Object.assign({}, state.personal, {
+        card
+      })
+      console.log(state.personal)
     }
   }
 })

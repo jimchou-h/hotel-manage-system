@@ -21,6 +21,7 @@ Vue.use(BaiduMap, {
 
 Vue.prototype.$Service = require('@/assets/service/service').default;
 Vue.prototype.$Cache = require('@/assets/global/cache').default
+Vue.prototype.$Methods = require('@/assets/global/methods').default
 
 /* eslint-disable no-new */
 new Vue({
